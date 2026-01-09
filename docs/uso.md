@@ -1,18 +1,24 @@
-# Uso
+# 🏃 Uso de la aplicación
 
-## Capturas
+## 🖼️ Capturas
 
 ![Pantalla principal](img/home.png)
 
-## Casos de uso
+---
 
-- Registrar un entrenamiento indicando distancia, tiempo y ritmo.
-- Consultar el historial de entrenamientos.
+## 🧪 Casos de uso
+
+- Registrar un entrenamiento con distancia, tiempo y ritmo.
+- Consultar el historial completo.
 - Ver estadísticas básicas (distancia total, ritmo medio).
-- Eliminar o editar entrenamientos guardados.
+- Editar o eliminar entrenamientos.
 
-## Usuarios tipo
+---
 
-- Corredores principiantes.
-- Corredores intermedios que quieren controlar su progreso.
-- Usuarios que prefieren una app ligera sin instalación.
+## 👥 Usuarios tipo
+
+| Tipo de usuario | Necesidad |
+|-----------------|-----------|
+| Principiante | Registrar entrenamientos básicos |
+| Intermedio | Controlar ritmo y progresión |
+| Avanzado | Planificar sesiones y analizar datos |

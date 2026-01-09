@@ -1,13 +1,14 @@
-# Instalación
+# ⚙️ Instalación
 
-## Requisitos
+## 📌 Requisitos
 
-- Navegador web moderno (Chrome, Firefox, Edge…)
-- Git (opcional si quieres clonar el proyecto)
+- Navegador moderno (Chrome, Firefox, Edge…)
+- Git (opcional)
 
-## Pasos de instalación
+---
 
-1. Clonar el repositorio del proyecto:
+## 🧭 Pasos de instalación
 
-   git clone https://github.com/RotaruX/proyecto-intermodular-doc.git
+1. Clonar el repositorio:
 
+   git clone https://github.com/RotaruX/runtrack.git

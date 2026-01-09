@@ -1,10 +1,17 @@
-# Introducción
+# 📝 Introducción
 
-## Objetivo del proyecto
+## 🎯 Objetivo del proyecto
 
-RunTrack permite registrar entrenamientos de correr, visualizar estadísticas básicas y organizar sesiones de forma sencilla desde el navegador.
+RunTrack permite registrar entrenamientos de running, visualizar estadísticas y planificar sesiones de forma sencilla desde el navegador.
 
-## Problema que resuelve
+---
+
+## 🧩 Problema que resuelve
 
 Muchos corredores guardan sus entrenamientos en notas o apps poco flexibles.  
-RunTrack ofrece una solución ligera, accesible y sin necesidad de instalación.
+RunTrack ofrece una solución:
+
+- Ligera  
+- Accesible  
+- Sin instalación  
+- 100% en el navegador  

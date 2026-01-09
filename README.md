@@ -1,19 +1,34 @@
-# RUNTRUCK
+# 🏃‍♂️ RunTrack — Gestión de entrenamientos de correr
 
-# Nombre del proyecto 
-Proyecto de aplicacion para correr.
+RunTrack es una aplicación web desarrollada con **HTML, CSS y JavaScript** que permite registrar entrenamientos de running, visualizar estadísticas y seguir la progresión del usuario.
 
-## Descripción
+---
 
-El proyecto lo que hace es la gestion de entrenamientos de correr, en la que tendremos entrenamiento con los tiempos y los ritmos, además de la fecha en la que lo hemos realizado.
+## 🚀 Funcionalidades principales
 
-## Tecnologías utilizadas
+- Registro de entrenamientos (distancia, tiempo, ritmo)
+- Historial completo de sesiones
+- Estadísticas básicas de rendimiento
+- Almacenamiento local mediante `localStorage`
+- Interfaz ligera y accesible desde cualquier navegador
 
-- HTML y CSS
-- JavaScript
-- Git y GitHub
+---
 
-## Autores
+## 🛠️ Tecnologías utilizadas
+
+| Tecnología | Uso |
+|-----------|-----|
+| **HTML5** | Estructura de la aplicación |
+| **CSS3** | Estilos y diseño visual |
+| **JavaScript (ES6)** | Lógica y gestión de datos |
+| **localStorage** | Persistencia en el navegador |
+| **Git & GitHub** | Control de versiones |
+
+---
+
+## 👤 Autor
 
 - Alexandru Adrian Rotaru Alergus
 
+&copy;
+2026 Derechos reservados
