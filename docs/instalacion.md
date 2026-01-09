@@ -11,4 +11,4 @@
 
 1. Clonar el repositorio:
 
-   git clone https://github.com/RotaruX/runtrack.git
+   git clone https://github.com/RotaruX/proyecto-intermodular-doc.git
