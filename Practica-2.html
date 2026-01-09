@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practica - 2</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+    <div id="cuadroBienvenida" class="cuadro-overlay">
+        <div class="cuadro">
+            <span class="cerrar-cuadro" onclick="cerrarCuadro()">&times;</span>
+            <h2>¡Bienvenido a tu App de Entrenamientos!</h2>
+            <p>Registra tus sesiones de running, controla tu velocidad y mejora tus marcas cada día. ¡A por ello!</p>
+            <button onclick="cerrarCuadro()">Empezar</button>
+        </div>
+    </div>
+
+    <form id="registro">
+        <h2>Registro</h2>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" placeholder="Pedro">
+        <span id="errorNombre" class="error"></span>
+
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" placeholder="Pérez Gómez">
+        <span id="errorApellidos" class="error"></span>
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="text" id="correo" placeholder="pedrogon@gmail.com">
+        <span id="errorCorreo" class="error"></span>
+
+        <label for="altura">Altura (m):</label>
+        <input type="number" id="altura" step="0.01" placeholder="1.78">
+        <span id="errorAltura" class="error"></span>
+
+        <label for="peso">Peso (kg):</label>
+        <input type="number" id="peso" step="0.01" placeholder="75.5">
+        <span id="errorPeso" class="error"></span>
+
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" placeholder="24">
+        <span id="errorEdad" class="error"></span>
+
+        <input type="button" onclick="validar()" value="Registrar">
+    </form>
+
+    <h1 id="bienvenido"></h1>
+    <img src="corriendo2.webp" id="imagenes">
+    <form id="acciones">
+        <input type="button" onclick="mostrarFormularioEntrenamiento()" id="formCrearEntrenamiento"
+            value="Crear Entrenamiento">
+        <input type="button"id="formMejorEntrenamiento" value="Mejor Entrenamiento">
+        <input type="button"id="todosEntrenamientos" value="Mostrar todos los Entrenamientos">
+        <input type="button"id="totalKm" value="Total Kilómetros">
+        <input type="button" onclick="cerrarSesion()" value="Cerrar Sesión y Borrar Datos">
+    </form>
+
+    <form id="formEntrenamiento" name="formEntrenamiento">
+        <label for="distancia">Distancia</label>
+        <input type="number" id="distancia" step="0.01" placeholder="5.0">
+        <span id="errorDistancia" class="error"></span>
+
+        <label for="unidadesDistancia">Unidad de distancia:</label>
+        <select id="unidadesDistancia">
+            <option value="km">Kilómetros</option>
+            <option value="m">Metros</option>
+        </select>
+
+        <label for="tiempo">Tiempo</label>
+        <input type="number" id="tiempo" step="1" placeholder="30">
+        <span id="errorTiempo" class="error"></span>
+
+        <label>Unidad de tiempo:</label>
+        <div class="radio-group">
+            <label><input type="radio" name="unidadTiempo" value="minutos" checked> Minutos</label>
+            <label><input type="radio" name="unidadTiempo" value="horas"> Horas</label>
+        </div>
+
+        <input type="button" onclick="registrarEntrenamiento()" value="Registrar Entrenamiento">
+    </form>
+    <form id="mejorEntreno">
+        <label>Selecciona por tipo:</label>
+        <div class="radio-group">
+            <label><input type="radio" name="tipo" value="distancia" checked> Distancia</label>
+            <label><input type="radio" name="tipo" value="velocidad"> Velocidad</label>
+            <label><input type="radio" name="tipo" value="tiempo"> Tiempo</label>
+        </div>
+        <input type="button" id="verMejor" onclick="mostrarMejorEntrenamiento()" value="Ver Mejor Entrenamiento">
+    </form>
+
+    <div id="mejor" class="mostrar"></div>
+    <div id="todos" class="mostrar"></div>
+    <div id="km" class="mostrar"></div>
+    
+
+    <script>
+        window.onload = function() {
+            let datosGuardados = localStorage.getItem("usuarioRegistrado");
+
+            if (datosGuardados) {
+
+                let objetoPersona = JSON.parse(datosGuardados);
+
+                persona = new Persona(
+                    objetoPersona.nombre, 
+                    objetoPersona.apellidos, 
+                    objetoPersona.correo, 
+                    objetoPersona.altura, 
+                    objetoPersona.peso, 
+                    objetoPersona.edad
+                );
+
+                persona.entrenamientos = objetoPersona.entrenamientos || [];
+                mostrarInterfazUsuario();
+            }
+        };
+
+        function mostrarInterfazUsuario() {
+            document.getElementById("registro").style.display = "none";
+            document.getElementById("bienvenido").style.display = "block";
+            document.getElementById("bienvenido").innerHTML = "¡Hola de nuevo, " + persona.nombre + "!";
+            document.getElementById("acciones").style.display = "block";
+            document.getElementById("imagenes").style.display = "block";
+        }
+
+        let persona;
+        const arrayImagenes = ["corriendo1.webp", "corriendo2.webp", "corriendo3.webp", "corriendo4.webp"];
+        let contador = 0;
+        let intervalo = setInterval(() => {
+            document.getElementById("imagenes").src = arrayImagenes[contador];
+            contador++;
+            if(contador === arrayImagenes.length){
+                contador = 0;
+            } 
+        }, 2000);
+        document.getElementById("imagenes").style.display = "none";
+        document.getElementById("bienvenido").style.display = "none";
+        document.getElementById("acciones").style.display = "none";
+        document.getElementById("formEntrenamiento").style.display = "none";
+        document.getElementById("mejorEntreno").style.display = "none";
+        document.getElementById("mejor").style.display = "none";
+        document.getElementById("todos").style.display = "none";
+        document.getElementById("km").style.display = "none";
+
+        // Validación formulario registro
+        function validar() {
+            let nombre = document.getElementById("nombre").value;
+            let apellidos = document.getElementById("apellidos").value;
+            let correo = document.getElementById("correo").value;
+            let altura = document.getElementById("altura").value;
+            let peso = document.getElementById("peso").value;
+            let edad = document.getElementById("edad").value;
+
+            let regexTexto = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
+            let regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            let valido = true;
+
+            if (!regexTexto.test(nombre)) {
+                document.getElementById("errorNombre").innerHTML = "Solo letras y espacios permitidos.";
+                valido = false;
+            } else document.getElementById("errorNombre").innerHTML = "";
+
+            if (!regexTexto.test(apellidos)) {
+                document.getElementById("errorApellidos").innerHTML = "Solo letras y espacios permitidos.";
+                valido = false;
+            } else document.getElementById("errorApellidos").innerHTML = "";
+
+            if (!regexCorreo.test(correo)) {
+                document.getElementById("errorCorreo").innerHTML = "Correo inválido. Un formato correcto es: juan@gmail.com";
+                valido = false;
+            } else document.getElementById("errorCorreo").innerHTML = "";
+
+            if (isNaN(parseFloat(altura)) || parseFloat(altura) <= 0) {
+                document.getElementById("errorAltura").innerHTML = "Altura inválida.";
+                valido = false;
+            } else document.getElementById("errorAltura").innerHTML = "";
+
+            if (isNaN(parseFloat(peso)) || parseFloat(peso) <= 0) {
+                document.getElementById("errorPeso").innerHTML = "Peso inválido.";
+                valido = false;
+            } else document.getElementById("errorPeso").innerHTML = "";
+
+            if (isNaN(parseInt(edad)) || parseInt(edad) < 1 || parseInt(edad) > 120) {
+                document.getElementById("errorEdad").innerHTML = "Edad inválida.";
+                valido = false;
+            } else document.getElementById("errorEdad").innerHTML = "";
+
+            if (valido) {
+                persona = new Persona(nombre, apellidos, correo, parseFloat(altura), parseFloat(peso), parseInt(edad));
+                localStorage.setItem("usuarioRegistrado", JSON.stringify(persona));
+                mostrarInterfazUsuario(); 
+            }
+        }
+
+        //Cerrar Sesion
+        function cerrarSesion() {
+            if(confirm("¿Quieres borrar todos tus datos y entrenamientos?")) {
+                localStorage.removeItem("usuarioRegistrado");
+                location.reload(); // Recarga la página para volver al formulario de registro
+            }
+        }
+
+        // Mostrar formulario crear entrenamiento
+        function mostrarFormularioEntrenamiento() {
+            document.getElementById("formEntrenamiento").style.display = "block";
+            document.getElementById("mejor").style.display = "none";
+            document.getElementById("todos").style.display = "none";
+            document.getElementById("mejorEntreno").style.display = "none";
+            document.getElementById("km").style.display = "none";
+        }
+
+        //Formulario registrar entrenamiento
+        function registrarEntrenamiento() {
+            document.getElementById("mejor").style.display = "none";
+            document.getElementById("mejorEntreno").style.display = "none";
+            document.getElementById("todos").style.display = "none";
+            document.getElementById("km").style.display = "none";
+
+            var distancia = parseFloat(document.getElementById("distancia").value);
+            var tiempo = parseFloat(document.getElementById("tiempo").value); 
+            var unidadDistancia = document.getElementById("unidadesDistancia").value;
+            var unidadTiempo;
+
+            let validarCampos = true;
+
+            document.getElementsByName("unidadTiempo").forEach(r => {
+                if (r.checked) unidadTiempo = r.value;
+            });
+
+            if (isNaN(distancia) || distancia <= 0) {
+                document.getElementById("errorDistancia").innerHTML = "Distancia inválida.";
+                validarCampos = false;
+            } else document.getElementById("errorDistancia").innerHTML = "";
+
+            if (isNaN(tiempo) || tiempo <= 0) {
+                document.getElementById("errorTiempo").innerHTML = "Tiempo inválido.";
+                validarCampos = false;
+            } else document.getElementById("errorTiempo").innerHTML = "";
+
+            if (validarCampos) {
+                if (unidadDistancia === "m") distancia /= 1000;
+                if (unidadTiempo === "horas") tiempo *= 60;
+
+                let e = new Entrenamiento(distancia, tiempo);
+                e.calcularVelocidad();
+                e.crearNivel();
+                persona.entrenamientos.push(e);
+                localStorage.setItem("usuarioRegistrado", JSON.stringify(persona));
+                document.getElementById("formEntrenamiento").style.display = "none";
+                document.getElementById("acciones").style.display = "block";
+            }
+
+        }
+
+
+        // Mostrar mejor entrenamiento
+        function mejorEntrenamiento() {
+            document.getElementById("mejorEntreno").style.display = "none";
+            document.getElementById("mejor").style.display = "none";
+            document.getElementById("todos").style.display = "none";
+            document.getElementById("formEntrenamiento").style.display = "none";
+            document.getElementById("km").style.display = "none";
+            const mejorDiv = document.getElementById("mejor");
+            if (persona.entrenamientos.length === 0) {
+                mejorDiv.style.display = "block";
+                mejorDiv.innerHTML = "<p>No hay entrenamientos registrados.</p>";
+                return;
+            } else {
+                document.getElementById("mejorEntreno").style.display = "block";
+            }
+        }
+
+        //Muestrar el mejor entrenamiento segun el tipo seleccionado
+        function mostrarMejorEntrenamiento() {
+            let mejor = persona.getMejorEntrenamiento();
+            const mejorDiv = document.getElementById("mejorEntreno");
+
+            document.getElementById("todos").style.display = "none";
+            document.getElementById("formEntrenamiento").style.display = "none";
+            document.getElementById("km").style.display = "none";
+            document.getElementById("mejor").style.display = "none";
+
+            mejorDiv.innerHTML = "";
+            mejorDiv.style.display = "block";
+
+            if (!mejor) {
+                let mensaje = document.createElement("p");
+                mensaje.textContent = "No hay entrenamientos registrados.";
+                mejorDiv.appendChild(mensaje);
+                return;
+            }
+
+            let tarjetaMejor = document.createElement("div");
+            tarjetaMejor.classList.add("tarjeta-entreno");
+            let titulo = document.createElement("h4");
+            titulo.textContent = "🏆 Mejor Entrenamiento (Mayor Velocidad)";
+            tarjetaMejor.appendChild(titulo);
+            let pInfo = document.createElement("p");
+            pInfo.innerHTML = `
+                <strong>Distancia:</strong> ${mejor.distancia.toFixed(2)} km <br>
+                <strong>Tiempo:</strong> ${mejor.tiempo} min <br>
+                <strong>Velocidad:</strong> ${mejor.velocidad.toFixed(2)} min/km <br>
+                <strong>Nivel:</strong> ${mejor.nivel}
+            `;
+            tarjetaMejor.appendChild(pInfo);
+            mejorDiv.appendChild(tarjetaMejor);
+        }
+
+        // Mostrar todos los entrenamientos
+        function mostrarTodosEntrenamientos() {
+            const todosDiv = document.getElementById("todos");
+            
+            // Limpiamos las vistas previas
+            document.getElementById("mejor").style.display = "none";
+            document.getElementById("formEntrenamiento").style.display = "none";
+            document.getElementById("mejorEntreno").style.display = "none";
+            document.getElementById("km").style.display = "none";
+            
+            // Limpiamos el contenido anterior para regenerarlo
+            todosDiv.innerHTML = ""; 
+            todosDiv.style.display = "block";
+
+            if (persona.entrenamientos.length === 0) {
+                let mensaje = document.createElement("p");
+                mensaje.textContent = "No hay entrenamientos registrados.";
+                todosDiv.appendChild(mensaje);
+                return;
+            }
+
+            let tituloSeccion = document.createElement("h3");
+            tituloSeccion.textContent = "Todos los entrenamientos";
+            todosDiv.appendChild(tituloSeccion);
+
+            // Recorremos el array de entrenamientos
+            persona.entrenamientos.forEach((entreno, index) => {
+                
+                // 1. Crear el DIV contenedor del entrenamiento
+                let divEntreno = document.createElement("div");
+                divEntreno.classList.add("tarjeta-entreno");
+                divEntreno.setAttribute("id", "entreno-card-" + index);
+
+                // 2. Crear y añadir el título
+                let titulo = document.createElement("h4");
+                titulo.textContent = `Entrenamiento ${index + 1}`;
+                divEntreno.appendChild(titulo);
+
+                // 3. Crear y añadir la información
+                let pInfo = document.createElement("p");
+                pInfo.innerHTML = `
+                    <strong>Distancia:</strong> ${entreno.distancia.toFixed(2)} km <br>
+                    <strong>Tiempo:</strong> ${entreno.tiempo} min <br>
+                    <strong>Velocidad:</strong> ${entreno.velocidad.toFixed(2)} min/km <br>
+                    <strong>Nivel:</strong> ${entreno.nivel}
+                `;
+                divEntreno.appendChild(pInfo);
+
+                // 4. Crear el botón de borrar con su clase específica
+                let btnBorrar = document.createElement("button");
+                btnBorrar.textContent = "Borrar";
+                btnBorrar.classList.add("btn-borrar");
+                btnBorrar.onclick = function() {
+                    // Uso de getAttribute para obtener el ID antes de borrar (Punto 6 del PDF)
+                    let idCard = divEntreno.getAttribute("id");
+                    let confirmar = confirm("¿Estás seguro de borrar el " + idCard + "?");
+                    
+                    if (confirmar) {
+                        persona.entrenamientos.splice(index, 1);
+                        mostrarTodosEntrenamientos(); // Refrescar la lista
+                    }
+                };
+                divEntreno.appendChild(btnBorrar);
+                todosDiv.appendChild(divEntreno);
+            });
+        }
+
+        //Total kilómetros
+        function totalKm1() {
+            const kmDiv = document.getElementById("km");
+            document.getElementById("mejor").style.display = "none";
+            document.getElementById("formEntrenamiento").style.display = "none";
+            document.getElementById("mejorEntreno").style.display = "none";
+            document.getElementById("todos").style.display = "none";
+
+            if (persona.entrenamientos.length === 0) {
+                kmDiv.style.display = "block";
+                kmDiv.innerHTML = "<p>No hay entrenamientos registrados.</p>";
+                return;
+            }
+
+            let total = 0;
+            persona.entrenamientos.forEach(entreno => {
+                total += entreno.distancia;
+            });
+
+            kmDiv.innerHTML = `<h3>Total de kilómetros recorridos: ${total.toFixed(2)} km</h3>`;
+            kmDiv.style.display = "block";
+        }
+
+        // Función para cerrar el cuadro de bienvenida
+        function cerrarCuadro() {
+            const cuadro = document.getElementById("cuadroBienvenida");
+            cuadro.style.display = "none";
+        }
+
+        // Clase Persona
+        class Persona {
+            constructor(nombre, apellidos, correo, altura, peso, edad) {
+                this.nombre = nombre;
+                this.apellidos = apellidos;
+                this.correo = correo;
+                this.altura = altura;
+                this.peso = peso;
+                this.edad = edad;
+                this.entrenamientos = [];
+            }
+        }
+
+        // Clase Entrenamiento
+        class Entrenamiento {
+            constructor(distancia, tiempo) {
+                this.distancia = distancia;
+                this.tiempo = tiempo;
+                this.velocidad = 0;
+                this.fecha = new Date();
+                this.nivel = "";
+            }
+
+            calcularVelocidad() {
+                this.velocidad = this.tiempo / this.distancia;
+            }
+
+            crearNivel() {
+                if (this.distancia < 4) this.nivel = "Malo";
+                else if (this.distancia <= 10) this.nivel = "Bueno";
+                else this.nivel = "Muy Bueno";
+            }
+        }
+
+        const bototAnyadir = document.getElementById("formCrearEntrenamiento");
+        bototAnyadir.addEventListener("click", mostrarFormularioEntrenamiento, false);
+        const botonMejor = document.getElementById("formMejorEntrenamiento");
+        botonMejor.addEventListener("click", mejorEntrenamiento, false);
+        const botonTodos = document.getElementById("todosEntrenamientos");
+        botonTodos.addEventListener("click", mostrarTodosEntrenamientos, false);
+        const botonKm = document.getElementById("totalKm");
+        botonKm.addEventListener("click", totalKm1, false);
+    </script>
+</body>
+
+</html>

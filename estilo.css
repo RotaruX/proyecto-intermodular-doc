@@ -1,0 +1,180 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+form {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    margin-top: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+input:focus, select:focus {
+    border-color: #800020; 
+    outline: none;
+}
+
+.error {
+    color: red;
+    font-size: 0.85em;
+    margin-bottom: 10px;
+    display: block;
+    min-height: 16px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+button, input[type="button"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #800020;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 6px;
+}
+
+button:hover, input[type="button"]:hover {
+    background-color: #5a0015;
+}
+
+#bienvenido {
+    margin-top: 10px;
+}
+
+.mostrar {
+    width: 50%;
+    margin-top: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    display: block; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+img {
+    width: 300px;
+    height: 300px;
+}
+
+.tarjeta-entreno {
+    width: 100%;
+    background-color: #fff;
+    border-left: 5px solid #800020;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    box-sizing: border-box; 
+    border-top: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.tarjeta-entreno h4 {
+    margin: 0;
+    color: #800020;
+    font-size: 1.1em;
+}
+
+.tarjeta-entreno p {
+    margin: 2px 0;
+    color: #444;
+    font-size: 0.95em;
+}
+
+.btn-borrar {
+    align-self: flex-end;
+    background-color: #f44336; 
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    margin-top: 10px;
+    width: auto;
+}
+
+.btn-borrar:hover {
+    background-color: #d32f2f;
+}
+
+.cuadro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+}
+
+.cuadro {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.cerrar-cuadro {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+}
+
+.cerrar-cuadro:hover {
+    color: #800020; 
+}
