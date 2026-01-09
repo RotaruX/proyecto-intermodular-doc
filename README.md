@@ -1,4 +1,4 @@
-# Practica 3 - JS
+# RUNTRUCK
 
 # Nombre del proyecto 
 Proyecto de aplicacion para correr.
